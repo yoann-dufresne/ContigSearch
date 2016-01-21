@@ -31,7 +31,13 @@ public class GraphIO {
 	}
 
 	private static void parseVerticies(BufferedReader vbr, Graph graph) throws IOException {
-		String[] vTitles = vbr.readLine().split(";");
+		String titles = vbr.readLine();
+		if (!titles.contains("Id")) {
+			System.err.println("The node file must contain an \"Id\" column.");
+			System.exit(1);
+		}
+		
+		String[] vTitles = titles.split(";");
 		int vid = 0, /*vLabel, */vSpecies = 0;
 		for (int idx=0 ; idx<vTitles.length ; idx++) {
 			switch (vTitles[idx]) {
@@ -53,13 +59,23 @@ public class GraphIO {
 			if (split.length != vTitles.length)
 				continue;
 			
-			Node n = new Node(split[vid], split[vSpecies]);
+			Node n = null;
+			if (vSpecies != 0)
+				n = new Node(split[vid], split[vSpecies]);
+			else
+				n = new Node(split[vid], "?");
 			graph.nodes.put(n.id, n);
 		}
 	}
 	
 	private static void parseEdges(BufferedReader ebr, Graph graph) throws IOException {
-		String[] vTitles = ebr.readLine().split(";");
+		String titles = ebr.readLine();
+		if (!titles.contains("Source") || !titles.contains("Target")) {
+			System.err.println("The edge file must contain a \"Source\" and a \"Target\" columns.");
+			System.exit(1);
+		}
+		
+		String[] vTitles = titles.split(";");
 		int source = 0, target = 0;
 		for (int idx=0 ; idx<vTitles.length ; idx++) {
 			switch (vTitles[idx]) {

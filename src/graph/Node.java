@@ -9,9 +9,9 @@ public class Node {
 	public String species;
 	public Set<Node> neighbors;
 	
-	public Node(String id, String spacies) {
+	public Node(String id, String species) {
 		this.id = id;
-		this.species = spacies;
+		this.species = species;
 		this.neighbors = new HashSet<>();
 	}
 	
