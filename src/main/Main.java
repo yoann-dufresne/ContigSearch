@@ -11,8 +11,32 @@ import misc.GraphIO;
 public class Main {
 
 	public static void main(String[] args) {
-		String verticies = "data/16sp/verticies.csv";
-		String edges = "data/16sp/edges.csv";
+		
+		String nodesFile = "nodes.csv";
+		String edgesFile = "edges.csv";
+		
+		/* --- Arguments parsing --- */
+		for (int idx=0 ; idx<args.length ; idx++) {
+			switch (args[idx]) {
+			case "-n":
+				nodesFile = args[++idx];
+				break;
+			case "-e":
+				edgesFile = args[++idx];
+				break;
+
+			default:
+				break;
+			}
+		}
+		
+		Main main = new Main();
+		main.exec(nodesFile, edgesFile);
+	}
+	
+	public Main() {}
+	
+	public void exec (String verticies, String edges) {
 		String ctrVerticies = verticies.substring(0, verticies.lastIndexOf('.')) + "_contracted.csv";
 		String ctrEdges = edges.substring(0, edges.lastIndexOf('.')) + "_contracted.csv";
 		
