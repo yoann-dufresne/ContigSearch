@@ -1,5 +1,6 @@
 package main;
 
+import java.io.File;
 import java.util.Map;
 
 import algo.BFS;
@@ -28,6 +29,18 @@ public class Main {
 			default:
 				break;
 			}
+		}
+		
+		/* Tests for files */
+		File nf = new File(nodesFile);
+		if (!nf.exists()) {
+			System.err.println(nodesFile + " don't exist");
+			System.exit(1);
+		}
+		File ef = new File(edgesFile);
+		if (!ef.exists()) {
+			System.err.println(edgesFile + " don't exist");
+			System.exit(1);
 		}
 		
 		Main main = new Main();
