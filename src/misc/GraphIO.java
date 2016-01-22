@@ -116,10 +116,10 @@ public class GraphIO {
 			// Nodes
 			BufferedWriter bwv = new BufferedWriter(new FileWriter(nodeFile));
 			
-			bwv.write("Id;Label;Size;Species\n");
+			bwv.write("Id;Label;Size;Species;ContigId\n");
 			for (Node n : graph.nodes.values()) {
 				MetaNode mn = (MetaNode)n;
-				bwv.write(n.id + ';' + n.species + ';' + mn.nodes.size() + ';' + mn.species + '\n');
+				bwv.write(n.id + ';' + n.species + ';' + mn.nodes.size() + ';' + mn.species + ';' + mn.contigId + '\n');
 			}
 			
 			bwv.close();
@@ -133,7 +133,7 @@ public class GraphIO {
 				avgDegree += e.degree;
 			avgDegree /= graph.edges.size();
 			
-			bwe.write("Source;Target;Type;Degree;Category\n");
+			bwe.write("Source;Target;Type;Degree;Category;ContigId\n");
 			for (Edge e : graph.edges) {
 				bwe.write(e.n1.id + ';' + e.n2.id + ";Undirected;" + e.degree + ';' + (e.degree * 10 / avgDegree) + '\n');
 			}
@@ -149,14 +149,12 @@ public class GraphIO {
 			BufferedWriter bwv = new BufferedWriter(new FileWriter(filename));
 			
 			bwv.write("Contig;Read\n");
-			int contIdx = 0;
 			for (MetaNode c : contigs.nodes.values()) {
-				contIdx += 1;
 				Contig cont = (Contig)c;
 				for (Node mn : cont.nodes) {
 					MetaNode meta = (MetaNode)mn;
 					for (Node node : meta.nodes)
-						bwv.write("" + contIdx + ';' + node.id + '\n');
+						bwv.write("" + cont.idx + ';' + node.id + '\n');
 				}
 			}
 			

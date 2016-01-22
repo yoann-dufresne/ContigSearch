@@ -33,7 +33,10 @@ public class ContigSplicing {
 			// In case of hub
 			if (current.arity() > 2) {
 				nodes.remove(current);
+				
 				contig.addNode(current);
+				current.contigId = contig.idx;
+				
 				contigs.nodes.put(contig.id, contig);
 				continue;
 			}
@@ -45,6 +48,7 @@ public class ContigSplicing {
 				current = queue.poll();
 				nodes.remove(current);
 				contig.addNode(current);
+				current.contigId = contig.idx;
 				
 				for (Node nei : current.neighbors) {
 					if (nei.arity() <= 2 &&  nodes.contains(nei))
