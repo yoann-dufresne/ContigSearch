@@ -7,12 +7,12 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
-import graph.Graph;
+import graph.BasicGraph;
 import graph.Node;
 
 public class BFS {
 	
-	public static Map<Node, Integer> search (Graph gr, Node start) {
+	public static Map<Node, Integer> search (BasicGraph gr, Node start) {
 		Map<Node, Integer> annotations = new HashMap<>();
 		Set<Node> allNodes = new HashSet<Node>();
 		allNodes.addAll(gr.nodes.values());

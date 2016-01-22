@@ -7,15 +7,17 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
+import graph.BasicEdge;
+import graph.BasicGraph;
+import graph.ContractedGraph;
 import graph.Edge;
-import graph.Graph;
 import graph.MetaNode;
 import graph.Node;
 
 public class Contraction {
 	
-	public static Graph contract (Map<Node, Integer> annotations, Graph graph) {
-		Graph contracted = new Graph();
+	public static ContractedGraph contract (Map<Node, Integer> annotations, BasicGraph graph) {
+		ContractedGraph contracted = new ContractedGraph();
 		Map<Node, MetaNode> ctrNodes = new HashMap<>();
 		
 		// Nodes
@@ -25,13 +27,7 @@ public class Contraction {
 			Node current = toProcess.iterator().next();
 			toProcess.remove(current);
 			
-			/* Dégeu a changer */
-			MetaNode mn = null;
-			if (current instanceof MetaNode)
-				mn = (MetaNode)current;
-			else
-				mn = new MetaNode(current);
-			/* Fin dégeu */
+			MetaNode mn = new MetaNode(current);
 			
 			mn.addNode(current);
 			ctrNodes.put(current, mn);
@@ -63,7 +59,7 @@ public class Contraction {
 			MetaNode mn2 = ctrNodes.get(e.n2);
 			
 			if (!mn1.equals(mn2)) {
-				Edge ne = new Edge(mn1, mn2, 1);
+				Edge ne = new BasicEdge(mn1, mn2);
 				mn1.neighbors.add(mn2);
 				mn2.neighbors.add(mn1);
 				if (!edges.containsKey(ne.toString()))
@@ -79,31 +75,28 @@ public class Contraction {
 	}
 	
 	
-	public static void absorbFingers (Graph graph) {
-		Set<Node> nodes = new HashSet<>();
-		for (Node n : graph.nodes.values())
+	public static void absorbFingers (ContractedGraph graph) {
+		Set<MetaNode> nodes = new HashSet<>();
+		for (MetaNode n : graph.nodes.values())
 			nodes.add(n);
 		
-		for (Node node : nodes) {
+		for (MetaNode node : nodes) {
 			if (node.arity() == 1) {
-				Node nei = node.neighbors.iterator().next();
+				MetaNode nei = (MetaNode) node.neighbors.iterator().next();
 				if (nei.arity() > 2) {
 					graph.nodes.remove(node.id);
 					nei.neighbors.remove(node);
 					node.neighbors.remove(nei);
-					graph.edges.remove(new Edge(node, nei));
+					graph.edges.remove(new BasicEdge(node, nei));
 					
-					MetaNode mNei = (MetaNode)nei;
-					MetaNode mNode = (MetaNode)nei;
-					
-					for (Node content : mNode.nodes)
-						mNei.addNode(content);
+					for (Node content : node.nodes)
+						nei.addNode(content);
 				}
 			}
 		}
 	}
 	
-	public static void filterNodes (int nodeSize, Graph graph) {
+	public static void filterNodes (int nodeSize, ContractedGraph graph) {
 		Set<MetaNode> nodes = new HashSet<>();
 		for (Node n : graph.nodes.values())
 			nodes.add((MetaNode)n);
@@ -111,7 +104,7 @@ public class Contraction {
 		for (MetaNode node : nodes) {
 			if (node.nodes.size() <= nodeSize) {
 				for (Node nei : node.neighbors) {
-					Edge e = new Edge(node, nei);
+					Edge e = new BasicEdge(node, nei);
 					graph.edges.remove(e);
 					
 					nei.neighbors.remove(node);
@@ -121,7 +114,7 @@ public class Contraction {
 		}
 	}
 	
-	public static void filterEdges (int edgeDegree, Graph graph) {
+	public static void filterEdges (int edgeDegree, ContractedGraph graph) {
 		Set<Edge> edges = new HashSet<>();
 		edges.addAll(graph.edges);
 		

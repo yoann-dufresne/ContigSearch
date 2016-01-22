@@ -5,6 +5,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import graph.BasicEdge;
+import graph.BasicGraph;
+import graph.BasicNode;
 import graph.Edge;
 import graph.Graph;
 import graph.MetaNode;
@@ -12,8 +15,8 @@ import graph.Node;
 
 public class GraphIO {
 
-	public static Graph load (String verticiesFile, String edgesFile) {
-		Graph graph = new Graph();
+	public static BasicGraph load (String verticiesFile, String edgesFile) {
+		BasicGraph graph = new BasicGraph();
 		
 		try {
 			BufferedReader vbr = new BufferedReader(new FileReader(verticiesFile));
@@ -30,7 +33,7 @@ public class GraphIO {
 		return graph;
 	}
 
-	private static void parseVerticies(BufferedReader vbr, Graph graph) throws IOException {
+	private static void parseVerticies(BufferedReader vbr, BasicGraph graph) throws IOException {
 		String titles = vbr.readLine();
 		if (!titles.contains("Id")) {
 			System.err.println("The node file must contain an \"Id\" column.");
@@ -59,16 +62,16 @@ public class GraphIO {
 			if (split.length != vTitles.length)
 				continue;
 			
-			Node n = null;
+			BasicNode n = null;
 			if (vSpecies != 0)
-				n = new Node(split[vid], split[vSpecies]);
+				n = new BasicNode(split[vid], split[vSpecies]);
 			else
-				n = new Node(split[vid], "?");
+				n = new BasicNode(split[vid], "?");
 			graph.nodes.put(n.id, n);
 		}
 	}
 	
-	private static void parseEdges(BufferedReader ebr, Graph graph) throws IOException {
+	private static void parseEdges(BufferedReader ebr, BasicGraph graph) throws IOException {
 		String titles = ebr.readLine();
 		if (!titles.contains("Source") || !titles.contains("Target")) {
 			System.err.println("The edge file must contain a \"Source\" and a \"Target\" columns.");
@@ -101,12 +104,12 @@ public class GraphIO {
 			Node t = graph.nodes.get(split[target]);
 			s.neighbors.add(t);
 			t.neighbors.add(s);
-			Edge e = new Edge(s, t);
+			BasicEdge e = new BasicEdge(s, t);
 			graph.edges.add(e);
 		}
 	}
 	
-	public static void save (Graph graph, String nodeFile, String edgeFile) {
+	public static void save (Graph<? extends Node, ? extends Edge> graph, String nodeFile, String edgeFile) {
 		try {
 			// Nodes
 			BufferedWriter bwv = new BufferedWriter(new FileWriter(nodeFile));

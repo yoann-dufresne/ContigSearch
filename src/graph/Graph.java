@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Graph {
+public abstract class Graph <N extends Node, E extends Edge> {
 
-	public Map<String, Node> nodes;
-	public List<Edge> edges;
+	public Map<String, N> nodes;
+	public List<E> edges;
 	
 	public Graph() {
 		this.nodes = new HashMap<>();

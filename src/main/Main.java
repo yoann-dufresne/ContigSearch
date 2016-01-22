@@ -5,7 +5,8 @@ import java.util.Map;
 
 import algo.BFS;
 import algo.Contraction;
-import graph.Graph;
+import graph.BasicGraph;
+import graph.ContractedGraph;
 import graph.Node;
 import misc.GraphIO;
 
@@ -61,12 +62,12 @@ public class Main {
 		String ctrVerticies = verticies.substring(0, verticies.lastIndexOf('.')) + "_contracted.csv";
 		String ctrEdges = edges.substring(0, edges.lastIndexOf('.')) + "_contracted.csv";
 		
-		Graph graph = GraphIO.load(verticies, edges);
+		BasicGraph graph = GraphIO.load(verticies, edges);
 		System.out.println("--- Loading ---");
 		System.out.println("Nb nodes: " + graph.nodes.size());
 		System.out.println("Nb edges: " + graph.edges.size());
 		
-		Graph contracted = null;
+		ContractedGraph contracted = null;
 		System.out.println("--- Contraction ---");
 		Map<Node, Integer> annotations = BFS.search(graph, graph.nodes.values().iterator().next());
 		System.out.println("Nb annotations : " + annotations.size());

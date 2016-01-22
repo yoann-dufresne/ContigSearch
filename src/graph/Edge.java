@@ -1,6 +1,6 @@
 package graph;
 
-public class Edge {
+public abstract class Edge {
 
 	public Node n1;
 	public Node n2;

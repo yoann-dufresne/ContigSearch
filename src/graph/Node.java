@@ -3,7 +3,7 @@ package graph;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Node {
+public abstract class Node {
 
 	public String id;
 	public String species;
