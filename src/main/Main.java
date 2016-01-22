@@ -15,6 +15,8 @@ public class Main {
 		
 		String nodesFile = "nodes.csv";
 		String edgesFile = "edges.csv";
+		int nodeFilter = 0;
+		int edgeFilter = 0;
 		
 		/* --- Arguments parsing --- */
 		for (int idx=0 ; idx<args.length ; idx++) {
@@ -24,6 +26,12 @@ public class Main {
 				break;
 			case "-e":
 				edgesFile = args[++idx];
+				break;
+			case "-N":
+				nodeFilter = new Integer(args[++idx]);
+				break;
+			case "-E":
+				edgeFilter = new Integer(args[++idx]);
 				break;
 
 			default:
@@ -44,12 +52,12 @@ public class Main {
 		}
 		
 		Main main = new Main();
-		main.exec(nodesFile, edgesFile);
+		main.exec(nodesFile, edgesFile, nodeFilter, edgeFilter);
 	}
 	
 	public Main() {}
 	
-	public void exec (String verticies, String edges) {
+	public void exec (String verticies, String edges, int nodeFilter, int edgeFilter) {
 		String ctrVerticies = verticies.substring(0, verticies.lastIndexOf('.')) + "_contracted.csv";
 		String ctrEdges = edges.substring(0, edges.lastIndexOf('.')) + "_contracted.csv";
 		
@@ -72,8 +80,9 @@ public class Main {
 		System.out.println("Nb contracted edges: " + contracted.edges.size());
 		
 		System.out.println("--- Filter small nodes ---");
-		Contraction.filterNodes(1, contracted);
-		Contraction.filterEdges(1, contracted);
+		Contraction.filterNodes(nodeFilter, contracted);
+		Contraction.filterEdges(edgeFilter, contracted);
+		Contraction.absorbFingers(contracted);/**/
 		System.out.println("Nb contracted nodes: " + contracted.nodes.size());
 		System.out.println("Nb contracted edges: " + contracted.edges.size());
 		
