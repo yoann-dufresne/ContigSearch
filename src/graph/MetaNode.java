@@ -9,14 +9,20 @@ public class MetaNode extends Node {
 	
 	public Set<Node> nodes;
 
-	public MetaNode(Node n) {
-		super("_meta_" + nextId++, n.species);
+	public MetaNode() {
+		super("_meta_" + nextId++, "?");
 		this.nodes = new HashSet<>();
-		this.nodes.add(n);
+	}
+	
+	public MetaNode(Node n) {
+		this();
+		this.addNode(n);
 	}
 	
 	public void addNode (Node n) {
-		if (!n.species.equals(this.species))
+		if (this.nodes.size() == 0)
+			this.species = n.species;
+		else if (!n.species.equals(this.species))
 			this.species = "?";
 		
 		this.nodes.add(n);

@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Map;
 
 import algo.BFS;
+import algo.ContigSplicing;
 import algo.Contraction;
 import graph.BasicGraph;
 import graph.ContractedGraph;
@@ -80,12 +81,17 @@ public class Main {
 		System.out.println("Nb contracted nodes: " + contracted.nodes.size());
 		System.out.println("Nb contracted edges: " + contracted.edges.size());
 		
-		System.out.println("--- Filter small nodes ---");
+		System.out.println("--- Filter small nodes and weak edges ---");
 		Contraction.filterNodes(nodeFilter, contracted);
 		Contraction.filterEdges(edgeFilter, contracted);
 		Contraction.absorbFingers(contracted);/**/
 		System.out.println("Nb contracted nodes: " + contracted.nodes.size());
 		System.out.println("Nb contracted edges: " + contracted.edges.size());
+		
+		System.out.println("--- Contigs splicings ---");
+		ContigSplicing cs = new ContigSplicing(contracted);
+		ContractedGraph contigs = cs.basicSplicing();
+		System.out.println(contigs.nodes.size());
 		
 		System.out.println("--- Save ---");
 		GraphIO.save(contracted, ctrVerticies, ctrEdges);/**/

@@ -1,16 +1,60 @@
 package algo;
 
-import graph.Graph;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Set;
+
+import graph.Contig;
+import graph.ContigGraph;
+import graph.ContractedGraph;
+import graph.MetaNode;
+import graph.Node;
 
 public class ContigSplicing {
 
-	private Graph graph;
-	//private ContigGraph contigs;
+	private ContractedGraph contracted;
 
-	public ContigSplicing(Graph contracted) {
-		this.graph = contracted;
+	public ContigSplicing(ContractedGraph contracted) {
+		this.contracted = contracted;
 	}
 	
-	
+	public ContigGraph basicSplicing () {
+		ContigGraph contigs = new ContigGraph();
+		
+		Set<MetaNode> nodes = new HashSet<>();
+		nodes.addAll(this.contracted.nodes.values());
+		
+		// Nodes creation
+		while (!nodes.isEmpty()) {
+			MetaNode current = nodes.iterator().next();
+			Contig contig = new Contig();
+			
+			// In case of hub
+			if (current.arity() > 2) {
+				nodes.remove(current);
+				contig.addNode(current);
+				contigs.nodes.put(contig.id, contig);
+				continue;
+			}
+			
+			// Otherwise
+			Queue<MetaNode> queue = new LinkedList<>();
+			queue.add(current);
+			while (!queue.isEmpty()) {
+				current = queue.poll();
+				nodes.remove(current);
+				contig.addNode(current);
+				
+				for (Node nei : current.neighbors) {
+					if (nei.arity() <= 2 &&  nodes.contains(nei))
+						queue.add((MetaNode) nei);
+				}
+			}
+			contigs.nodes.put(contig.id, contig);
+		}
+		
+		return contigs;
+	}
 	
 }
