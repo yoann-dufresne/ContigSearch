@@ -8,6 +8,8 @@ import java.io.IOException;
 import graph.BasicEdge;
 import graph.BasicGraph;
 import graph.BasicNode;
+import graph.Contig;
+import graph.ContigGraph;
 import graph.Edge;
 import graph.Graph;
 import graph.MetaNode;
@@ -137,6 +139,28 @@ public class GraphIO {
 			}
 			
 			bwe.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void saveContigs (ContigGraph contigs, String filename) {
+		try {
+			BufferedWriter bwv = new BufferedWriter(new FileWriter(filename));
+			
+			bwv.write("Id;read\n");
+			int contIdx = 0;
+			for (MetaNode c : contigs.nodes.values()) {
+				contIdx += 1;
+				Contig cont = (Contig)c;
+				for (Node mn : cont.nodes) {
+					MetaNode meta = (MetaNode)mn;
+					for (Node node : meta.nodes)
+						bwv.write("" + contIdx + ';' + node.id + '\n');
+				}
+			}
+			
+			bwv.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

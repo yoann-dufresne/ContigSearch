@@ -7,6 +7,7 @@ import algo.BFS;
 import algo.ContigSplicing;
 import algo.Contraction;
 import graph.BasicGraph;
+import graph.ContigGraph;
 import graph.ContractedGraph;
 import graph.Node;
 import misc.GraphIO;
@@ -62,6 +63,7 @@ public class Main {
 	public void exec (String verticies, String edges, int nodeFilter, int edgeFilter) {
 		String ctrVerticies = verticies.substring(0, verticies.lastIndexOf('.')) + "_contracted.csv";
 		String ctrEdges = edges.substring(0, edges.lastIndexOf('.')) + "_contracted.csv";
+		String configFile = edges.substring(0, edges.lastIndexOf('/')) + "/contigs.csv";
 		
 		BasicGraph graph = GraphIO.load(verticies, edges);
 		System.out.println("--- Loading ---");
@@ -90,11 +92,12 @@ public class Main {
 		
 		System.out.println("--- Contigs splicings ---");
 		ContigSplicing cs = new ContigSplicing(contracted);
-		ContractedGraph contigs = cs.basicSplicing();
+		ContigGraph contigs = cs.basicSplicing();
 		System.out.println(contigs.nodes.size());
 		
 		System.out.println("--- Save ---");
 		GraphIO.save(contracted, ctrVerticies, ctrEdges);/**/
+		GraphIO.saveContigs(contigs, configFile);
 	}
 
 }
