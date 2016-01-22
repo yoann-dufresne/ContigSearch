@@ -63,7 +63,9 @@ public class Main {
 	public void exec (String verticies, String edges, int nodeFilter, int edgeFilter) {
 		String ctrVerticies = verticies.substring(0, verticies.lastIndexOf('.')) + "_contracted.csv";
 		String ctrEdges = edges.substring(0, edges.lastIndexOf('.')) + "_contracted.csv";
-		String configFile = edges.substring(0, edges.lastIndexOf('/')) + "/contigs.csv";
+		String configFile = "contigs.csv";
+		if (edges.contains("/"))
+			configFile = edges.substring(0, edges.lastIndexOf('/')) + "/contigs.csv";
 		
 		BasicGraph graph = GraphIO.load(verticies, edges);
 		System.out.println("--- Loading ---");

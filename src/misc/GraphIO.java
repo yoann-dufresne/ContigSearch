@@ -148,7 +148,7 @@ public class GraphIO {
 		try {
 			BufferedWriter bwv = new BufferedWriter(new FileWriter(filename));
 			
-			bwv.write("Id;read\n");
+			bwv.write("Contig;Read\n");
 			int contIdx = 0;
 			for (MetaNode c : contigs.nodes.values()) {
 				contIdx += 1;
