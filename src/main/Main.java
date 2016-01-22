@@ -93,7 +93,7 @@ public class Main {
 		System.out.println("--- Contigs splicings ---");
 		ContigSplicing cs = new ContigSplicing(contracted);
 		ContigGraph contigs = cs.basicSplicing();
-		System.out.println(contigs.nodes.size());
+		System.out.println("Nb of contigs: " + contigs.nodes.size());
 		
 		System.out.println("--- Save ---");
 		GraphIO.save(contracted, ctrVerticies, ctrEdges);/**/
