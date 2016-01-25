@@ -14,3 +14,6 @@ Options:
 containing only x or less reads.  
 `-E x` Set to x the edge filter parameter. The edge filter parameter is used to delete edges
 representing only x or less edges from the original graph.  
+`-oc` Set true for the optimization contig flag. If the oc flag is true, the algorithm will try
+to move nodes from hubs to contigs. If there is one neighbor contig for this node, it moves,
+otherwise nothing append.
