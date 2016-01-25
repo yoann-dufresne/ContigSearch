@@ -20,6 +20,7 @@ public class Main {
 		String edgesFile = "edges.csv";
 		int nodeFilter = 0;
 		int edgeFilter = 0;
+		boolean optimizeContigs = false;
 		
 		/* --- Arguments parsing --- */
 		for (int idx=0 ; idx<args.length ; idx++) {
@@ -35,6 +36,9 @@ public class Main {
 				break;
 			case "-E":
 				edgeFilter = new Integer(args[++idx]);
+				break;
+			case "-oc":
+				optimizeContigs = true;
 				break;
 
 			default:
@@ -55,12 +59,12 @@ public class Main {
 		}
 		
 		Main main = new Main();
-		main.exec(nodesFile, edgesFile, nodeFilter, edgeFilter);
+		main.exec(nodesFile, edgesFile, nodeFilter, edgeFilter, optimizeContigs);
 	}
 	
 	public Main() {}
 	
-	public void exec (String verticies, String edges, int nodeFilter, int edgeFilter) {
+	public void exec (String verticies, String edges, int nodeFilter, int edgeFilter, boolean oc) {
 		String ctrVerticies = verticies.substring(0, verticies.lastIndexOf('.')) + "_contracted.csv";
 		String ctrEdges = edges.substring(0, edges.lastIndexOf('.')) + "_contracted.csv";
 		String configFile = "contigs.csv";
@@ -85,17 +89,28 @@ public class Main {
 		System.out.println("Nb contracted nodes: " + contracted.nodes.size());
 		System.out.println("Nb contracted edges: " + contracted.edges.size());
 		
-		System.out.println("--- Filter small nodes and weak edges ---");
-		Contraction.filterNodes(nodeFilter, contracted);
-		Contraction.filterEdges(edgeFilter, contracted);
-		Contraction.absorbFingers(contracted);/**/
-		System.out.println("Nb contracted nodes: " + contracted.nodes.size());
-		System.out.println("Nb contracted edges: " + contracted.edges.size());
+		if (nodeFilter != 0 || edgeFilter != 0) {
+			System.out.println("--- Filter small nodes and weak edges ---");
+			Contraction.filterNodes(nodeFilter, contracted);
+			Contraction.filterEdges(edgeFilter, contracted);
+			Contraction.absorbFingers(contracted);/**/
+			System.out.println("Nb contracted nodes: " + contracted.nodes.size());
+			System.out.println("Nb contracted edges: " + contracted.edges.size());
+		}
 		
 		System.out.println("--- Contigs splicings ---");
 		ContigSplicing cs = new ContigSplicing(contracted);
 		ContigGraph contigs = cs.basicSplicing();
 		System.out.println("Nb of contigs: " + contigs.nodes.size());
+		if (oc) {
+			int nbTransfered = 0;
+			int sum = 0;
+			do {
+				nbTransfered = cs.enlargeContigs(contigs);
+				sum += nbTransfered;
+			} while (nbTransfered != 0);
+			System.out.println("Nb reads transfered from hubs to contigs: " + sum);
+		}
 		
 		System.out.println("--- Save ---");
 		GraphIO.save(contracted, ctrVerticies, ctrEdges);/**/

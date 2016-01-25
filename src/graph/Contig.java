@@ -5,6 +5,7 @@ public class Contig extends MetaNode {
 	private static int nextIdx = 1;
 	
 	public int idx;
+	public boolean hub;
 
 	public Contig() {
 		super();
