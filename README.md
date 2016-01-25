@@ -10,7 +10,7 @@ Then run the command line:
 Options:  
 `-n <filename>` The path for the file containing the nodes  
 `-e <filename>` The path for the file containing the edges  
-`-b <basename>` The basename for the output files
+`-b <basename>` The basename for the output files  
 `-N x` Set to x the node filter parameter. The node filter parameter is used to delete nodes
 containing only x or less reads.  
 `-E x` Set to x the edge filter parameter. The edge filter parameter is used to delete edges
