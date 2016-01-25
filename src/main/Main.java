@@ -70,8 +70,7 @@ public class Main {
 	
 	public void exec (String verticies, String edges, String basename, int nodeFilter, int edgeFilter, boolean oc) {
 		
-		if (basename == "")
-		{
+		if (basename.equals("")) {
 			String tmp = verticies.substring(0, verticies.lastIndexOf('.'));
 			basename = tmp.substring(0, tmp.lastIndexOf('.'));
 		}
