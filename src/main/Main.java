@@ -77,7 +77,7 @@ public class Main {
 		
 		String ctrVerticies = basename + ".nodes_contracted.csv";
 		String ctrEdges = basename + ".edges_contracted.csv";
-		String configFile = basename + "contigs.csv";
+		String configFile = basename + ".contigs.csv";
 		
 		BasicGraph graph = GraphIO.load(verticies, edges);
 		System.out.println("--- Loading ---");
