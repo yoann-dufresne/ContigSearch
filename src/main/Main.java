@@ -18,6 +18,7 @@ public class Main {
 		
 		String nodesFile = "nodes.csv";
 		String edgesFile = "edges.csv";
+		String basename = "";
 		int nodeFilter = 0;
 		int edgeFilter = 0;
 		boolean optimizeContigs = false;
@@ -30,6 +31,9 @@ public class Main {
 				break;
 			case "-e":
 				edgesFile = args[++idx];
+				break;
+			case "-b":
+				basename = args[++idx];
 				break;
 			case "-N":
 				nodeFilter = new Integer(args[++idx]);
@@ -59,17 +63,21 @@ public class Main {
 		}
 		
 		Main main = new Main();
-		main.exec(nodesFile, edgesFile, nodeFilter, edgeFilter, optimizeContigs);
+		main.exec(nodesFile, edgesFile, basename, nodeFilter, edgeFilter, optimizeContigs);
 	}
 	
 	public Main() {}
 	
-	public void exec (String verticies, String edges, int nodeFilter, int edgeFilter, boolean oc) {
-		String ctrVerticies = verticies.substring(0, verticies.lastIndexOf('.')) + "_contracted.csv";
-		String ctrEdges = edges.substring(0, edges.lastIndexOf('.')) + "_contracted.csv";
-		String configFile = "contigs.csv";
-		if (edges.contains("/"))
-			configFile = edges.substring(0, edges.lastIndexOf('/')) + "/contigs.csv";
+	public void exec (String verticies, String edges, String basename, int nodeFilter, int edgeFilter, boolean oc) {
+		
+		if (basename.equals("")) {
+			String tmp = verticies.substring(0, verticies.lastIndexOf('.'));
+			basename = tmp.substring(0, tmp.lastIndexOf('.'));
+		}
+		
+		String ctrVerticies = basename + ".nodes_contracted.csv";
+		String ctrEdges = basename + ".edges_contracted.csv";
+		String configFile = basename + ".contigs.csv";
 		
 		System.out.println("--- Loading ---");
 		BasicGraph graph = GraphIO.load(verticies, edges);
