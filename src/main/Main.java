@@ -71,8 +71,8 @@ public class Main {
 		if (edges.contains("/"))
 			configFile = edges.substring(0, edges.lastIndexOf('/')) + "/contigs.csv";
 		
-		BasicGraph graph = GraphIO.load(verticies, edges);
 		System.out.println("--- Loading ---");
+		BasicGraph graph = GraphIO.load(verticies, edges);
 		System.out.println("Nb nodes: " + graph.nodes.size());
 		System.out.println("Nb edges: " + graph.edges.size());
 		
