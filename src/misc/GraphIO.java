@@ -148,13 +148,13 @@ public class GraphIO {
 		try {
 			BufferedWriter bwv = new BufferedWriter(new FileWriter(filename));
 			
-			bwv.write("Contig;Read\n");
+			bwv.write("Contig;Read;MetaNode\n");
 			for (MetaNode c : contigs.nodes.values()) {
 				Contig cont = (Contig)c;
 				for (Node mn : cont.nodes) {
 					MetaNode meta = (MetaNode)mn;
 					for (Node node : meta.nodes)
-						bwv.write("" + cont.idx + ';' + node.id + '\n');
+						bwv.write("" + cont.idx + ';' + node.id + ';' + meta.id + '\n');
 				}
 			}
 			
